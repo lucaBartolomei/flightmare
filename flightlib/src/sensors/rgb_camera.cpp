@@ -125,24 +125,24 @@ Scalar RGBCamera::getFOV(void) const { return fov_; }
 Scalar RGBCamera::getDepthScale(void) const { return depth_scale_; }
 
 void RGBCamera::enableDepth(const bool on) {
-  if (enabled_layers_[CameraLayer::DepthMap] == on) {
+  if (enabled_layers_[CameraLayer::DepthMap-1] == on) {
     logger_.warn("Depth layer was already %s.", on ? "on" : "off");
   }
-  enabled_layers_[CameraLayer::DepthMap] = on;
+  enabled_layers_[CameraLayer::DepthMap-1] = on;
 }
 
 void RGBCamera::enableSegmentation(const bool on) {
-  if (enabled_layers_[CameraLayer::Segmentation] == on) {
+  if (enabled_layers_[CameraLayer::Segmentation-1] == on) {
     logger_.warn("Segmentation layer was already %s.", on ? "on" : "off");
   }
-  enabled_layers_[CameraLayer::Segmentation] = on;
+  enabled_layers_[CameraLayer::Segmentation-1] = on;
 }
 
 void RGBCamera::enableOpticalFlow(const bool on) {
-  if (enabled_layers_[CameraLayer::OpticalFlow] == on) {
+  if (enabled_layers_[CameraLayer::OpticalFlow-1] == on) {
     logger_.warn("Optical Flow layer was already %s.", on ? "on" : "off");
   }
-  enabled_layers_[CameraLayer::OpticalFlow] = on;
+  enabled_layers_[CameraLayer::OpticalFlow-1] = on;
 }
 
 bool RGBCamera::getRGBImage(cv::Mat& rgb_img) {

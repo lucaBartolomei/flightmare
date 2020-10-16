@@ -215,7 +215,7 @@ bool UnityBridge::handleOutput() {
     for (const auto& cam : settings_.vehicles[idx].cameras) {
       for (size_t layer_idx = 0; layer_idx <= cam.enabled_layers.size();
            layer_idx++) {
-        if (!layer_idx == 0 && !cam.enabled_layers[layer_idx - 1]) continue;
+        if (layer_idx != 0 && !cam.enabled_layers[layer_idx - 1]) continue;
         uint32_t image_len = cam.width * cam.height * cam.channels;
         // Get raw image bytes from ZMQ message.
         // WARNING: This is a zero-copy operation that also casts the input to

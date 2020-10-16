@@ -8,7 +8,7 @@
 
   <arg name="use_unity_editor" default="true" />
   <arg name="paused" value="true"/>
-  <arg name="gui" value="true"/>
+  <arg name="gui" value="false"/>
   <arg name="use_mpc" default="false"/>
   <arg name="use_ground_truth" default="true"/>
   <arg name="enable_ground_truth" default="true"/>
@@ -57,12 +57,12 @@
 
     <!-- RPG RotorS interface. -->
     <node pkg="rpg_rotors_interface" type="rpg_rotors_interface" 
-        name="rpg_rotors_interface" output="screen" >
-      <rosparam file="$(find rpg_rotors_interface)/parameters/rpg_rotors_interface.yaml" />
-      <!-- .. -->
-      <remap from="odometry" to="ground_truth/odometry" />
-      <remap from="rpg_rotors_interface/arm" to="bridge/arm" />
-    </node>
+          name="rpg_rotors_interface" output="screen" >
+        <rosparam file="$(find rpg_rotors_interface)/parameters/rpg_rotors_interface.yaml" />
+
+        <remap from="odometry" to="odometry_sensor1/odometry" />
+        <remap from="rpg_rotors_interface/arm" to="bridge/arm" />
+      </node>
 
     <!-- RPG Flightmare Unity Render. -->
     <node pkg="flightrender" type="RPG_Flightmare.x86_64" name="rpg_flightmare_render" unless="$(arg use_unity_editor)">
