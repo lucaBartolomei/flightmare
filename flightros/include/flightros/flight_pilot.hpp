@@ -51,6 +51,9 @@ class FlightPilot {
   image_transport::Publisher semantic_img_pub_;
   image_transport::Publisher optical_flow_img_pub_;
 
+  ros::Publisher rgb_camera_info_pub_;
+  ros::Publisher depth_camera_info_pub_;
+
   // subscriber
   ros::Subscriber sub_state_est_;
 

@@ -48,9 +48,13 @@ FlightPilot::FlightPilot(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
   // initialize publishers
   if(use_rgb_) {
     rbg_img_pub_ = it_.advertise("rgb_image", 1);
+    rgb_camera_info_pub_ = nh_.advertise<sensor_msgs::CameraInfo>(
+                "rgb_image/camera_info", 1);
   }
   if(use_depth_) {
     depth_img_pub_ = it_.advertise("depth_image", 1);
+    depth_camera_info_pub_ = nh_.advertise<sensor_msgs::CameraInfo>(
+                "depth_image/camera_info", 1);
   }
   if(use_semantics_) {
     semantic_img_pub_ = it_.advertise("semantic_image", 1);
@@ -109,6 +113,24 @@ void FlightPilot::poseCallback(const nav_msgs::Odometry::ConstPtr &msg) {
         // publish image over ROS
         image_msg.image = rgb_image;
         rbg_img_pub_.publish(image_msg.toImageMsg());
+
+        // Generate the camera info message
+        sensor_msgs::CameraInfo camera_info;
+        camera_info.width = rgb_camera_->getWidth();
+        camera_info.height = rgb_camera_->getHeight();
+        camera_info.distortion_model = "plum_bob";
+        float f = (camera_info.height / 2.0) /
+                tan((M_PI * (rgb_camera_->getFOV() / 180.0)) / 2.0);
+        float cx = camera_info.width / 2.0;
+        float cy = camera_info.height / 2.0;
+        float tx = 0.0;
+        float ty = 0.0;
+        camera_info.D = {0.0, 0.0, 0.0, 0.0, 0.0};
+        camera_info.K = {f, 0.0, cx, 0.0, f, cy, 0.0, 0.0, 1.0};
+        camera_info.R = {1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0};
+        camera_info.P = {f, 0.0, cx, tx, 0.0, f, cy, ty, 0.0, 0.0, 1.0, 0.0};
+
+        rgb_camera_info_pub_.publish(camera_info);
     }
 
     if(use_depth_) {
@@ -122,6 +144,25 @@ void FlightPilot::poseCallback(const nav_msgs::Odometry::ConstPtr &msg) {
         // publish image over ROS
         image_msg.image = depth_image;
         depth_img_pub_.publish(image_msg.toImageMsg());
+
+        // Generate the camera info message
+        sensor_msgs::CameraInfo depth_camera_info;
+        depth_camera_info.width = rgb_camera_->getWidth();
+        depth_camera_info.height = rgb_camera_->getHeight();
+        depth_camera_info.distortion_model = "plum_bob";
+        float f = (depth_camera_info.height / 2.0) /
+                tan((M_PI * (rgb_camera_->getFOV() / 180.0)) / 2.0);
+        float cx = depth_camera_info.width / 2.0;
+        float cy = depth_camera_info.height / 2.0;
+        float tx = 0.0;
+        float ty = 0.0;
+        depth_camera_info.D = {0.0, 0.0, 0.0, 0.0, 0.0};
+        depth_camera_info.K = {f, 0.0, cx, 0.0, f, cy, 0.0, 0.0, 1.0};
+        depth_camera_info.R = {1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0};
+        depth_camera_info.P = {
+            f, 0.0, cx, tx, 0.0, f, cy, ty, 0.0, 0.0, 1.0, 0.0};
+
+        depth_camera_info_pub_.publish(depth_camera_info);
     }
 
     if(use_semantics_) {

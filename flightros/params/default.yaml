@@ -1,13 +1,13 @@
-scene_id: 0
+scene_id: 3 # 0: Warehouse
 main_loop_freq: 50.0
 unity_render: yes 
 
 t_BC_x: 0.0
 t_BC_y: 0.0
-t_BC_z: 0.3
+t_BC_z: -0.3
 
-q_BC_w: 1.0
-q_BC_x: 0.0
+q_BC_w: 0.966
+q_BC_x: -0.259
 q_BC_y: 0.0
 q_BC_z: 0.0
 
