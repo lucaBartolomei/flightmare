@@ -9,8 +9,6 @@
 #include <image_transport/image_transport.h>
 
 // rpg quadrotor
-#include <autopilot/autopilot_helper.h>
-#include <autopilot/autopilot_states.h>
 #include <quadrotor_common/parameter_helper.h>
 #include <quadrotor_msgs/AutopilotFeedback.h>
 

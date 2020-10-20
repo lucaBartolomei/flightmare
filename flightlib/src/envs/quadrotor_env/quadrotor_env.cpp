@@ -19,11 +19,39 @@ QuadrotorEnv::QuadrotorEnv(const std::string &cfg_path)
   // load configuration file
   YAML::Node cfg_ = YAML::LoadFile(cfg_path);
 
+  // quadrotor
   quadrotor_ptr_ = std::make_shared<Quadrotor>();
   // update dynamics
   QuadrotorDynamics dynamics;
   dynamics.updateParams(cfg_);
   quadrotor_ptr_->updateDynamics(dynamics);
+
+  // parse arguments
+  use_depth_ = cfg_["rgb"]["use_depth"].as<bool>();
+  use_semantics_ = cfg_["rgb"]["use_semantic"].as<bool>();
+
+  Quaternion q_BC;
+  q_BC.x() = cfg_["rgb"]["q_BC_x"].as<Scalar>();
+  q_BC.y() = cfg_["rgb"]["q_BC_y"].as<Scalar>();
+  q_BC.z() = cfg_["rgb"]["q_BC_z"].as<Scalar>();
+  q_BC.w() = cfg_["rgb"]["q_BC_w"].as<Scalar>();
+
+  Vector<3> B_r_BC;
+  B_r_BC.x() = cfg_["rgb"]["t_BC_x"].as<Scalar>();
+  B_r_BC.y() = cfg_["rgb"]["t_BC_y"].as<Scalar>();
+  B_r_BC.z() = cfg_["rgb"]["t_BC_z"].as<Scalar>();
+
+  // add a camera
+  rgb_camera_ = std::make_shared<RGBCamera>();
+  rgb_camera_->setFOV( cfg_["rgb"]["fov"].as<Scalar>() );
+  rgb_camera_->setWidth( cfg_["rgb"]["width"].as<Scalar>() );
+  rgb_camera_->setHeight( cfg_["rgb"]["height"].as<Scalar>() );
+
+  rgb_camera_->enableDepth(use_depth_);
+  rgb_camera_->enableSegmentation(use_semantics_);
+
+  Matrix<3, 3> R_BC = q_BC.toRotationMatrix();
+  rgb_camera_->setRelPose(B_r_BC, R_BC);
 
   // define a bounding box
   world_box_ << -20, 20, -20, 20, 0, 20;

@@ -16,6 +16,7 @@
 #include "flightlib/common/types.hpp"
 #include "flightlib/envs/env_base.hpp"
 #include "flightlib/objects/quadrotor.hpp"
+#include "flightlib/sensors/rgb_camera.hpp"
 
 namespace flightlib {
 
@@ -70,6 +71,7 @@ class QuadrotorEnv final : public EnvBase {
   // quadrotor
   std::shared_ptr<Quadrotor> quadrotor_ptr_;
   QuadState quad_state_;
+  std::shared_ptr<RGBCamera> rgb_camera_;
   Command cmd_;
   Logger logger_{"QaudrotorEnv"};
 
@@ -89,8 +91,12 @@ class QuadrotorEnv final : public EnvBase {
   Vector<quadenv::kNObs> obs_mean_ = Vector<quadenv::kNObs>::Zero();
   Vector<quadenv::kNObs> obs_std_ = Vector<quadenv::kNObs>::Ones();
 
+  // configuration-related members
   YAML::Node cfg_;
   Matrix<3, 2> world_box_;
+
+  bool use_depth_;
+  bool use_semantics_;
 };
 
 }  // namespace flightlib
