@@ -5,6 +5,7 @@
 
 // ros
 #include <nav_msgs/Odometry.h>
+#include <sensor_msgs/PointCloud.h>
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 
@@ -51,6 +52,7 @@ class FlightPilot {
 
   ros::Publisher rgb_camera_info_pub_;
   ros::Publisher depth_camera_info_pub_;
+  ros::Publisher dense_pcl_pub_;
 
   // subscriber
   ros::Subscriber sub_state_est_;

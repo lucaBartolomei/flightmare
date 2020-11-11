@@ -1,4 +1,4 @@
-scene_id: 3 # 0: Warehouse
+scene_id: 0 # 0: Warehouse, 4: Flat Ground
 main_loop_freq: 50.0
 unity_render: yes 
 
@@ -6,10 +6,17 @@ t_BC_x: 0.0
 t_BC_y: 0.0
 t_BC_z: -0.3
 
+# Rot 30 deg
 q_BC_w: 0.966
 q_BC_x: -0.259
 q_BC_y: 0.0
 q_BC_z: 0.0
+
+# Rot 90 deg
+#q_BC_w: 0.707
+#q_BC_x: -0.707
+#q_BC_y: 0.0
+#q_BC_z: 0.0
 
 use_rgb: true
 use_depth: true

@@ -25,8 +25,9 @@ enum UnityScene {
   GARAGE = 1,
   TUNELS = 2,
   NATUREFOREST = 3,
+  FLATGROUND = 4,
   // total number of environment
-  SceneNum = 4
+  SceneNum = 5
 };
 
 // Unity Camera, should not be used alone.
@@ -39,6 +40,8 @@ struct Camera_t {
   int height{768};
   Scalar fov{70.0f};
   Scalar depth_scale{0.20};  // 0.xx corresponds to xx cm resolution
+  std::vector<Scalar> nearClipPlane{0.3, 0.3, 0.3, 0.3};
+  std::vector<Scalar> farClipPlane{200.0, 200.0, 200.0, 200.0};
   // metadata
   bool is_depth{false};
   int output_index{0};
@@ -139,6 +142,8 @@ inline void to_json(json &j, const Camera_t &o) {
            {"isDepth", o.is_depth},
            {"enabledLayers", o.enabled_layers},
            {"depthScale", o.depth_scale},
+           {"nearClipPlane", o.nearClipPlane},
+           {"farClipPlane", o.farClipPlane},
            {"outputIndex", o.output_index}};
 }
 

@@ -15,5 +15,8 @@
     </node>
 
   </group> 
+  
+  <!-- Static transform from base_link to unity_cam -->
+  <node pkg="tf" type="static_transform_publisher" name="link_cam_unity" args="0 0 0 3.14 3.14 0 /$(arg mav_name)/base_link unity_cam 100" />
 
 </launch>
